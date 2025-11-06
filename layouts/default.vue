@@ -1,70 +1,127 @@
 <template>
   <div>
-    <!-- Шапка -->
-    <header class="flex flex-col md:flex-row items-center md:justify-between w-full bg-indigo-700 text-white px-6 py-4 shadow-lg relative">
+    <!-- ШАПКА -->
+    <header
+      class="flex flex-col md:flex-row items-center md:justify-between w-full bg-indigo-700 text-white px-6 py-4 shadow-lg relative"
+    >
       <!-- Логотип -->
       <div class="flex items-center gap-3 mb-3 md:mb-0">
-        <img src="/images/logo.png" class="w-16 h-16 rounded-full border-2 border-white shadow-sm" alt="Logo" />
-        <span class="text-2xl font-extrabold tracking-wide">Amira Project</span>
+        <!-- логотип остаётся logo.png -->
+        <img
+          src="/images/logo.png"
+          class="w-16 h-16 rounded-full border-2 border-white shadow-sm"
+          alt="Logo"
+        />
+        <div class="flex flex-col">
+          <span class="text-2xl font-extrabold tracking-wide">Amira Project</span>
+          <span class="text-sm text-indigo-200 italic">сайт о Барсике 🐾</span>
+        </div>
       </div>
 
       <!-- Навигация (десктоп) -->
       <nav class="hidden md:flex flex-row items-center gap-4 relative z-50">
-        <NuxtLink to="/" class="px-3 py-2 rounded hover:bg-indigo-500 transition-colors">Home</NuxtLink>
+        <NuxtLink
+          to="/"
+          class="px-3 py-2 rounded hover:bg-indigo-500 transition-colors"
+          >Главная</NuxtLink
+        >
 
-        <!-- Меню Labs (теперь открывается по клику) -->
+        <!-- Галерея -->
         <div class="relative">
-          <button @click="toggleLabsDesktop" class="px-3 py-2 rounded hover:bg-indigo-500 transition-colors flex items-center gap-1">
-            Labs
+          <button
+            @click="toggleLabsDesktop"
+            class="px-3 py-2 rounded hover:bg-indigo-500 transition-colors flex items-center gap-1"
+          >
+            Фото и Видео
             <span v-if="labsDesktopOpen">▾</span>
             <span v-else>▸</span>
           </button>
 
-          <!-- Подменю -->
           <transition name="slide-fade">
             <div
               v-if="labsDesktopOpen"
-              class="absolute bg-white text-gray-800 mt-2 rounded shadow-lg w-32 z-50"
+              class="absolute bg-white text-gray-800 mt-2 rounded shadow-lg w-40 z-50"
             >
-              <NuxtLink to="/lab1" class="block px-4 py-2 hover:bg-gray-100">Lab1</NuxtLink>
-              <NuxtLink to="/lab2" class="block px-4 py-2 hover:bg-gray-100">Lab2</NuxtLink>
-              <NuxtLink to="/lab3" class="block px-4 py-2 hover:bg-gray-100">Lab3</NuxtLink>
-              <NuxtLink to="/lab4" class="block px-4 py-2 hover:bg-gray-100">Lab4</NuxtLink>
+              <NuxtLink to="/photos" class="block px-4 py-2 hover:bg-gray-100"
+                >Фото Барсика</NuxtLink
+              >
+              <NuxtLink to="/videos" class="block px-4 py-2 hover:bg-gray-100"
+                >Игра с Барсиком</NuxtLink
+              >
             </div>
           </transition>
         </div>
 
-        <NuxtLink to="/login" class="px-3 py-2 rounded hover:bg-indigo-500 transition-colors">LogIn</NuxtLink>
-        <NuxtLink to="/logout" class="px-3 py-2 rounded hover:bg-indigo-500 transition-colors">LogOut</NuxtLink>
+        <NuxtLink
+          to="/login"
+          class="px-3 py-2 rounded hover:bg-indigo-500 transition-colors"
+          >LogIn</NuxtLink
+        >
+        <NuxtLink
+          to="/logout"
+          class="px-3 py-2 rounded hover:bg-indigo-500 transition-colors"
+          >LogOut</NuxtLink
+        >
       </nav>
 
-      <!-- Кнопка-бургер (мобилка) -->
+      <!-- Кнопка бургер (мобилка) -->
       <button @click="toggleBurger" class="md:hidden p-2 bg-indigo-600 rounded">
         <span v-if="!burger">☰</span>
-        <span v-else>✖</span>
+        <span v-else>✖️</span>
       </button>
     </header>
 
     <!-- Мобильное меню -->
     <transition name="slide-fade">
-      <nav v-if="burger" class="md:hidden flex flex-col bg-indigo-600 text-white">
-        <NuxtLink to="/" class="px-4 py-3 border-t border-indigo-500 hover:bg-indigo-500">Home</NuxtLink>
+      <nav
+        v-if="burger"
+        class="md:hidden flex flex-col bg-indigo-600 text-white"
+      >
+        <NuxtLink
+          to="/"
+          class="px-4 py-3 border-t border-indigo-500 hover:bg-indigo-500"
+          >Главная</NuxtLink
+        >
 
-        <button @click="toggleLabs" class="flex justify-between items-center px-4 py-3 border-t border-indigo-500">
-          <span>Labs</span>
+        <!-- Подменю Фото и Видео -->
+        <button
+          @click="toggleLabs"
+          class="flex justify-between items-center px-4 py-3 border-t border-indigo-500"
+        >
+          <span>Фото и Видео</span>
           <span v-if="labsOpen">▾</span>
           <span v-else>▸</span>
         </button>
 
         <div v-if="labsOpen" class="flex flex-col bg-indigo-700">
-          <NuxtLink to="/lab1" class="px-6 py-2 border-t border-indigo-500 hover:bg-indigo-500">Lab1</NuxtLink>
-          <NuxtLink to="/lab2" class="px-6 py-2 border-t border-indigo-500 hover:bg-indigo-500">Lab2</NuxtLink>
-          <NuxtLink to="/lab3" class="px-6 py-2 border-t border-indigo-500 hover:bg-indigo-500">Lab3</NuxtLink>
-          <NuxtLink to="/lab4" class="px-6 py-2 border-t border-indigo-500 hover:bg-indigo-500">Lab4</NuxtLink>
+          <NuxtLink
+            to="/photos"
+            class="px-6 py-2 border-t border-indigo-500 hover:bg-indigo-500"
+            >Фото Барсика</NuxtLink
+          >
+          <!-- Вместо Видео и Аудио добавлены "О Барсике" и "Контакты" -->
+          <NuxtLink
+            to="/about"
+            class="px-6 py-2 border-t border-indigo-500 hover:bg-indigo-500"
+            >О Барсике</NuxtLink
+          >
+          <NuxtLink
+            to="/contact"
+            class="px-6 py-2 border-t border-indigo-500 hover:bg-indigo-500"
+            >Контакты</NuxtLink
+          >
         </div>
 
-        <NuxtLink to="/login" class="px-4 py-3 border-t border-indigo-500 hover:bg-indigo-500">LogIn</NuxtLink>
-        <NuxtLink to="/logout" class="px-4 py-3 border-t border-indigo-500 hover:bg-indigo-500">LogOut</NuxtLink>
+        <NuxtLink
+          to="/login"
+          class="px-4 py-3 border-t border-indigo-500 hover:bg-indigo-500"
+          >LogIn</NuxtLink
+        >
+        <NuxtLink
+          to="/logout"
+          class="px-4 py-3 border-t border-indigo-500 hover:bg-indigo-500"
+          >LogOut</NuxtLink
+        >
       </nav>
     </transition>
 
@@ -82,23 +139,19 @@ const burger = ref(false)
 const labsOpen = ref(false)
 const labsDesktopOpen = ref(false)
 
-// бургер меню
 function toggleBurger() {
   burger.value = !burger.value
   if (!burger.value) labsOpen.value = false
 }
 
-// мобильное подменю Labs
 function toggleLabs() {
   labsOpen.value = !labsOpen.value
 }
 
-// десктопное подменю Labs
 function toggleLabsDesktop() {
   labsDesktopOpen.value = !labsDesktopOpen.value
 }
 
-// клик вне меню — закрывает его
 function handleClickOutside(event) {
   const dropdown = document.querySelector(".relative")
   if (dropdown && !dropdown.contains(event.target)) {
@@ -106,12 +159,8 @@ function handleClickOutside(event) {
   }
 }
 
-onMounted(() => {
-  document.addEventListener("click", handleClickOutside)
-})
-onBeforeUnmount(() => {
-  document.removeEventListener("click", handleClickOutside)
-})
+onMounted(() => document.addEventListener("click", handleClickOutside))
+onBeforeUnmount(() => document.removeEventListener("click", handleClickOutside))
 </script>
 
 <style scoped>
