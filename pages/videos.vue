@@ -1,7 +1,7 @@
 <template>
   <div class="text-gray-800 text-center">
-    <h1 class="text-3xl font-bold text-indigo-700 mb-4">Игра с Барсиком </h1>
-    <p class="mb-4 text-lg">Кликай по кружку как можно быстрее за 10 секунд! </p>
+    <h1 class="text-3xl font-bold text-indigo-700 mb-4">Игра с Барсиком</h1>
+    <p class="mb-4 text-lg">Кликай по кружку как можно быстрее за 10 секунд!</p>
 
     <div class="flex justify-center mb-6">
       <button
@@ -18,10 +18,9 @@
         class="relative w-40 h-40 bg-indigo-500 rounded-full shadow-lg cursor-pointer hover:scale-105 transition-transform select-none"
         @click="clickCircle"
       >
-        <!-- Всплывающая анимация -->
         <transition-group name="pop" tag="div">
           <img
-            v-for="(anim, i) in animations"
+            v-for="anim in animations"
             :key="anim.id"
             src="/images/barsik_head.png"
             class="absolute w-16 h-16 object-cover"
@@ -35,7 +34,7 @@
     </div>
 
     <div v-else-if="gameOver" class="text-center">
-      <h2 class="text-2xl font-bold text-indigo-700 mb-2">Игра окончена </h2>
+      <h2 class="text-2xl font-bold text-indigo-700 mb-2">Игра окончена</h2>
       <p class="text-lg mb-4">Твой результат: <strong>{{ score }}</strong> кликов!</p>
       <p class="text-lg text-indigo-600 font-semibold mb-4">Рекорд: {{ record }}</p>
       <button
@@ -49,18 +48,25 @@
 </template>
 
 <script setup>
-import { ref } from "vue"
+definePageMeta({ ssr: false }) // 💡 Обязательно для Nuxt 3!
+
+import { ref, onMounted } from "vue"
 
 const gameActive = ref(false)
 const gameOver = ref(false)
 const score = ref(0)
-const record = ref(localStorage.getItem("barsik_record") || 0)
+const record = ref(0)
 const timeLeft = ref(10)
 const animations = ref([])
 
 let timer
 
-// Запуск игры
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    record.value = Number(localStorage.getItem("barsik_record")) || 0
+  }
+})
+
 function startGame() {
   score.value = 0
   timeLeft.value = 10
@@ -73,29 +79,27 @@ function startGame() {
   }, 1000)
 }
 
-// Конец игры
 function endGame() {
   clearInterval(timer)
   gameActive.value = false
   gameOver.value = true
   if (score.value > record.value) {
     record.value = score.value
-    localStorage.setItem("barsik_record", record.value)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("barsik_record", record.value)
+    }
   }
 }
 
-// Клик по кружку
 function clickCircle(event) {
   score.value++
   createAnimation(event)
 }
 
-// Мини-анимация “Барсик”
 function createAnimation(event) {
-  const rect = event.target.getBoundingClientRect()
   const id = Date.now()
-  const x = Math.random() * 80 + 30
-  const y = Math.random() * 80 + 30
+  const x = Math.random() * 80 + 10
+  const y = Math.random() * 80 + 10
   animations.value.push({ id, x, y })
   setTimeout(() => {
     animations.value = animations.value.filter((a) => a.id !== id)
